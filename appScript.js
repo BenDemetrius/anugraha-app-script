@@ -15,12 +15,7 @@ const WHATSAPP_ACCESS_TOKEN = "<<your token here>>";
 const WHATSAPP_TEMPLATE_NAME = "<<your template name here>>";
 const LANGUAGE_CODE = "en";
 
-const sendMessage_ = ({
-  recipient_number,
-  customer_name,
-  item_name,
-  delivery_date,
-}) => {
+const sendMessage_ = ({ recipient_number, member_name, event_date }) => {
   const apiUrl = "https://graph.facebook.com/v13.0/114746974570888/messages";
   const request = UrlFetchApp.fetch(apiUrl, {
     muteHttpExceptions: true,
@@ -42,15 +37,11 @@ const sendMessage_ = ({
             parameters: [
               {
                 type: "text",
-                text: customer_name,
+                text: member_name,
               },
               {
                 type: "text",
-                text: item_name,
-              },
-              {
-                type: "text",
-                text: delivery_date,
+                text: event_date,
               },
             ],
           },
@@ -86,9 +77,8 @@ const main = () => {
   data.forEach((recipient) => {
     const status = sendMessage_({
       recipient_number: recipient["Phone Number"].replace(/[^\d]/g, ""),
-      customer_name: recipient["Customer Name"],
-      item_name: recipient["Item Name"],
-      delivery_date: recipient["Delivery Date"],
+      member_name: recipient["Member Name"],
+      event_date: recipient["Event Date"],
     });
   });
 };
